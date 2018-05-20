@@ -3,6 +3,47 @@ Self-Driving Car Engineer Nanodegree Program
 
 ---
 
+## Rubric Points
+
+* Student describes their model in detail. This includes the state, actuators and update equations.
+
+The model that was retained is the kinematic model.
+
+states: 6 vehicles states described below
+  - x,y the coordinates of the vehicle, 
+  - Psi is the angle describing the orientation of the vehicle
+  - v the velocity of the vehicle
+  - cte the cross track error 
+
+
+actuators: there are three actuators steering wheel delta, throttle and break. For simplification purposes the throttle and break pedals are combined into one actuator, a, with positive values meaning acceleration and negative ones meaning applying break pedals. 
+
+
+Equations: equations explained in the classroom pasting them below 
+
+![kinematic model equations](./images/kinematic_model_equations.png)
+
+
+* Student discusses the reasoning behind the chosen N (timestep length) and dt (elapsed duration between timesteps) values. Additionally the student details the previous values tried.
+
+In the "Kinematic and Dynamic Vehicle Models for Autonomous Driving Control Design" paper, used tow discretization values 100ms and 200ms, the paper advocated for 200ms for their testing as it gave them better results. 
+However when applied to the Udacity simulator 100ms seemed to give better results than 200ms.
+T was chosen to be 10s. (following Q&A session of the project)
+
+
+* A polynomial is fitted to waypoints.If the student preprocesses waypoints, the vehicle state, and/or actuators prior to the MPC procedure it is described.
+
+The waypoints are transformed to the vehicles' perspective. This is done by subtracting them from x and y and rotating the car reference angle to bring it to 0. This makes the vehicle at the origin (0,0) and the orientation angle to be 0 which simplifies the polynomial fit.
+
+* The student implements Model Predictive Control that handles a 100 millisecond latency. Student provides details on how they deal with latency.
+Dealing with latency was achieved by applying the actuators one step later. This ended up being exactly one step later because the delay and the step dt are equal ( both 100 millesecond)
+
+
+
+
+
+
+
 ## Dependencies
 
 * cmake >= 3.5
