@@ -32,7 +32,7 @@ The waypoints are transformed to the vehicle's perspective. This is done by subt
 
 # Dealing with latency
 
-Dealing with latency was achieved by applying the actuators one step later. This ended up being exactly one step later because the delay and the step dt are equal (both 100 millesecond)
+Dealing with latency was achieved by recalculating the state vector one step further. This ended up being exactly one step further because the delay and the step dt are equal (both 100 millesecond)
 
 ![Dealing with latency](./images/dealing_with_latency.png)
 

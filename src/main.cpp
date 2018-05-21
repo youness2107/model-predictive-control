@@ -111,44 +111,38 @@ int main() {
           */
 
 	  double* ptrx = &ptsx[0];
-          Eigen::Map<Eigen::VectorXd> ptsx_transform(ptrx, 6);
+      Eigen::Map<Eigen::VectorXd> ptsx_transform(ptrx, 6);
 
 	  double* ptry = &ptsy[0];
-          Eigen::Map<Eigen::VectorXd> ptsy_transform(ptry, 6);
+      Eigen::Map<Eigen::VectorXd> ptsy_transform(ptry, 6);
 
  	  auto coeffs = polyfit(ptsx_transform, ptsy_transform, 3);
 	  
 	  // calculate cte and epsi
 	  double cte = polyeval(coeffs, 0);
-          // double epsi = psi - atan(coeffs[1] + 2 * px * coeffs[2] + 3 * coeffs[3] * pow(px, 2))
+      // double epsi = psi - atan(coeffs[1] + 2 * px * coeffs[2] + 3 * coeffs[3] * pow(px, 2))
 	  double epsi = -atan(coeffs[1]);
 
-          double steer_value = j[1]["steering_angle"];
-          double throttle_value = j[1]["throttle"];
+      double steer_value = j[1]["steering_angle"];
+      double throttle_value = j[1]["throttle"];
 
-    double latency_dt = 0.1;
-    // Add latency of 100ms
-    px = 0.0 + v  * latency_dt; // cos(0) = 1
-    py = 0.0; // sin(0) = 0
-    psi = v * -steer_value / 2.67 * latency_dt;
-    v = v + throttle_value * latency_dt;
-    cte = cte + v * sin(epsi) * latency_dt;
-    epsi = epsi + v *-steer_value / 2.67 * latency_dt;
+      double latency_dt = 0.1;
+      // Add latency of 100ms
+      px = 0.0 + v  * latency_dt; // cos(0) = 1
+      py = 0.0; // sin(0) = 0
+      psi = v * -steer_value / 2.67 * latency_dt;
+      v = v + throttle_value * latency_dt;
+      cte = cte + v * sin(epsi) * latency_dt;
+      epsi = epsi + v *-steer_value / 2.67 * latency_dt;
 
-    // Add everything to the state
-    Eigen::VectorXd state(6);
-    state << px, py, psi, v, cte, epsi;
-
-
-
-//	  Eigen::VectorXd state(6);
-//	  state << 0, 0, 0, v, cte, epsi;
-
+      // Add everything to the state
+      Eigen::VectorXd state(6);
+      state << px, py, psi, v, cte, epsi;
 
 	  auto vars = mpc.Solve(state, coeffs);
 
 	  vector<double> next_x_vals;
-          vector<double> next_y_vals;
+      vector<double> next_y_vals;
 
 	  double poly_inc = 2.5;
           int num_points = 25;
