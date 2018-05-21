@@ -126,8 +126,23 @@ int main() {
           double steer_value = j[1]["steering_angle"];
           double throttle_value = j[1]["throttle"];
 
-	  Eigen::VectorXd state(6);
-	  state << 0, 0, 0, v, cte, epsi;
+    double latency_dt = 0.1;
+    // Add latency of 100ms
+    px = 0.0 + v  * latency_dt; // cos(0) = 1
+    py = 0.0; // sin(0) = 0
+    psi = v * -steer_value / 2.67 * latency_dt;
+    v = v + throttle_value * latency_dt;
+    cte = cte + v * sin(epsi) * latency_dt;
+    epsi = epsi + v *-steer_value / 2.67 * latency_dt;
+
+    // Add everything to the state
+    Eigen::VectorXd state(6);
+    state << px, py, psi, v, cte, epsi;
+
+
+
+//	  Eigen::VectorXd state(6);
+//	  state << 0, 0, 0, v, cte, epsi;
 
 
 	  auto vars = mpc.Solve(state, coeffs);
